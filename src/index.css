@@ -1,13 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;500;600;700&display=swap');
+
+html,
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Sora', sans-serif;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@media (prefers-color-scheme: dark) {
+  .rc-slider-handle {
+    border-color: rgba(163, 230, 53, 1) !important;
+  }
+  .rc-slider-track {
+    background-color: rgba(163, 230, 53, 1) !important;
+  }
+  .rc-slider-dot-active {
+    border-color: rgba(163, 230, 53, 1) !important;
+  }
+}
+@media (prefers-color-scheme: light) {
+  .rc-slider-handle {
+    border-color: rgba(101, 163, 13, 1) !important;
+  }
+  .rc-slider-track {
+    background-color: rgba(101, 163, 13, 1) !important;
+  }
+  .rc-slider-dot-active {
+    border-color: rgba(101, 163, 13, 1) !important;
+  }
+}
+.rc-slider-mark-text {
+  top: -2rem;
+}
+#volume-slider .rc-slider-disabled {
+  background-color: transparent !important;
+}
+#volume-slider .rc-slider-disabled .rc-slider-track {
+  background-color: #ddd !important;
+}
+#volume-slider .rc-slider-disabled .rc-slider-handle {
+  border-color: #ddd !important;
 }
