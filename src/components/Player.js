@@ -75,8 +75,8 @@ export default function Player() {
             onChange={val => (audio.currentTime = val)}
           />
           <div className="text-gray-900 dark:text-gray-300 flex justify-between text-sm font-medium tabular-nums">
-            {currentTime ? <div>{currentTime}</div> : <div>00:00:00</div>}
-            {duration ? <div>{duration}</div> : <div>00:00:00</div>}
+            {currentTime ? <div>{currentTime}</div> : <div>00:00</div>}
+            {duration ? <div>{duration}</div> : <div>00:00</div>}
           </div>
         </div>
       </div>
