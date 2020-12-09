@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { convertSecondsToHHMMSS } from '../utils';
+import { convertSecondsToHHMMSS } from '../helpers';
 
 const useAudio = (url, vol) => {
   const [audio] = useState(new Audio(url));

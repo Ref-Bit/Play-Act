@@ -6,3 +6,4 @@ export { default as Forward } from './Forward';
 export { default as Volume } from './Volume';
 export { default as Mute } from './Mute';
 export { default as Pin } from './Pin';
+export { default as Logo } from './Logo';
