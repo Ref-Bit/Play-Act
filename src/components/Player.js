@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import {
@@ -9,15 +9,19 @@ import {
   Pin,
   Play,
   Rewind,
+  Upload,
   Volume,
 } from './Icons';
 import useAudio from '../hooks/useAudio';
-import { convertSecondsToHHMMSS } from '../helpers';
+import { convertSecondsToHHMMSS, convertFileToBase64 } from '../helpers';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 export default function Player() {
   const [vol, setVol] = useState(50);
+  const [url, setUrl] = useState(
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'
+  );
   const [marks, setMarks] = useState({});
   const [
     audio,
@@ -27,10 +31,7 @@ export default function Player() {
     muteToggle,
     currentTime,
     duration,
-  ] = useAudio(
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
-    vol
-  );
+  ] = useAudio(url, vol);
 
   const handleRate = e => (audio.playbackRate = parseFloat(e.target.value));
   const handleBookmark = () => {
@@ -41,6 +42,22 @@ export default function Player() {
       },
     });
   };
+  const handleUpload = async e => {
+    let file = e.target.files[0];
+
+    /** Method 1: Through Base64 */
+    // const fileBase64 = await convertFileToBase64(file);
+    // setUrl(fileBase64);
+
+    /** Method 2: Through Blob */
+    const fileURL = URL.createObjectURL(file);
+    setUrl(fileURL);
+  };
+
+  useEffect(() => {
+    audio.src = url;
+    return () => (audio.src = '');
+  }, [url]);
 
   return (
     <div className="flex flex-col mx-auto w-1/2 shadow hover:shadow-xl transition duration-300 lg:rounded-b-xl">
@@ -81,6 +98,17 @@ export default function Player() {
         </div>
       </div>
       <div className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white lg:rounded-b-xl py-4 px-1 sm:px-3 lg:px-1 xl:px-3 flex justify-evenly items-center">
+        <div className="mx-auto">
+          <label className="flex flex-col items-center cursor-pointer">
+            <Upload />
+            <input
+              type="file"
+              className="hidden"
+              accept="audio/*"
+              onChange={handleUpload}
+            />
+          </label>
+        </div>
         <button
           id="bookmark_btn"
           type="button"

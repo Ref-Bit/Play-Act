@@ -10,37 +10,44 @@ const useAudio = (url, vol) => {
 
   const toggle = () => setPlaying(!playing);
   const muteToggle = () => setMuted(!muted);
-  
+
   useEffect(() => {
-    const favicon = document.querySelector('#favicon');
-    const logo = document.querySelector('#logo');
-    if (playing) {
-      audio.play();
-      favicon.setAttribute('href', './play.png');
-      logo.classList.add('animate-ping');
-    } else {
-      audio.pause();
-      favicon.setAttribute('href', './pause.png');
-      logo.classList.remove('animate-ping');
-    }
+    playing ? audio.play() : audio.pause();
+
     muted && vol > 0 ? (audio.muted = true) : (audio.muted = false);
     audio.volume = vol / 100;
   }, [audio, playing, muted, vol]);
 
   useEffect(() => {
+    const favicon = document.querySelector('#favicon');
+    const logo = document.querySelector('#logo');
+
     audio.addEventListener('loadedmetadata', () =>
       setDuration(convertSecondsToHHMMSS(audio.duration))
     );
-
-    audio.addEventListener('timeupdate', () => {
-      setCurrentTime(convertSecondsToHHMMSS(audio.currentTime));
+    audio.addEventListener('play', () => {
+      favicon.setAttribute('href', './play.png');
+      logo.classList.add('animate-ping');
     });
+    audio.addEventListener('pause', () => {
+      favicon.setAttribute('href', './pause.png');
+      logo.classList.remove('animate-ping');
+    });
+    audio.addEventListener('timeupdate', () =>
+      setCurrentTime(convertSecondsToHHMMSS(audio.currentTime))
+    );
     audio.addEventListener('ended', () => setPlaying(false));
 
     return () => {
       audio.removeEventListener('loadedmetadata', () => setDuration(''));
       audio.removeEventListener('timeupdate', () => setCurrentTime(''));
       audio.removeEventListener('ended', () => setPlaying(false));
+      audio.removeEventListener('play', () =>
+        console.log('Play event removed')
+      );
+      audio.removeEventListener('pause', () =>
+        console.log('Pause event removed')
+      );
     };
   }, [audio, currentTime, duration]);
 

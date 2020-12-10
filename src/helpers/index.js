@@ -7,3 +7,11 @@ export const convertSecondsToHHMMSS = secs => {
   // Add hrs variable before mins to apply changes
   return [mins, secs % 60].map(format).join(':');
 };
+
+export const convertFileToBase64 = file =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
