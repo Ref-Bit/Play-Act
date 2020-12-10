@@ -13,7 +13,6 @@ const useAudio = (url, vol) => {
 
   useEffect(() => {
     playing ? audio.play() : audio.pause();
-
     muted && vol > 0 ? (audio.muted = true) : (audio.muted = false);
     audio.volume = vol / 100;
   }, [audio, playing, muted, vol]);
@@ -22,9 +21,10 @@ const useAudio = (url, vol) => {
     const favicon = document.querySelector('#favicon');
     const logo = document.querySelector('#logo');
 
-    audio.addEventListener('loadedmetadata', () =>
-      setDuration(convertSecondsToHHMMSS(audio.duration))
-    );
+    audio.addEventListener('loadedmetadata', () => {
+      setDuration(convertSecondsToHHMMSS(audio.duration));
+      // audio.play();
+    });
     audio.addEventListener('play', () => {
       favicon.setAttribute('href', './play.png');
       logo.classList.add('animate-ping');

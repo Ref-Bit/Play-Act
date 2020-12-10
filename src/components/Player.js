@@ -22,7 +22,6 @@ export default function Player() {
   const [url, setUrl] = useState(
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'
   );
-  const [marks, setMarks] = useState({});
   const [
     audio,
     playing,
@@ -32,8 +31,10 @@ export default function Player() {
     currentTime,
     duration,
   ] = useAudio(url, vol);
-
+  const [marks, setMarks] = useState({});
+  const [step, setStep] = useState(10);
   const handleRate = e => (audio.playbackRate = parseFloat(e.target.value));
+  const handleStep = e => setStep(parseInt(e.target.value));
   const handleBookmark = () => {
     setMarks({
       ...marks,
@@ -57,7 +58,7 @@ export default function Player() {
   useEffect(() => {
     audio.src = url;
     return () => (audio.src = '');
-  }, [url]);
+  }, [audio, url]);
 
   return (
     <div className="flex flex-col mx-auto w-1/2 shadow hover:shadow-xl transition duration-300 lg:rounded-b-xl">
@@ -122,10 +123,10 @@ export default function Player() {
           id="dec_30_btn"
           type="button"
           className="mx-auto"
-          onClick={() => (audio.currentTime -= 10)}
-          title="Rewind 10s"
+          onClick={() => (audio.currentTime -= step)}
+          title={`Rewind ${step}s`}
         >
-          <Rewind />
+          <Rewind step={step} />
         </button>
         <button
           id="play_btn"
@@ -147,10 +148,10 @@ export default function Player() {
           id="inc_30_btn"
           type="button"
           className="mx-auto"
-          onClick={() => (audio.currentTime += 10)}
-          title="Forward 10s"
+          onClick={() => (audio.currentTime += step)}
+          title={`Forward ${step}s`}
         >
-          <Forward />
+          <Forward step={step} />
         </button>
         <div className="inline-block relative w-16 mx-auto" title="Play Rate">
           <select
@@ -164,6 +165,26 @@ export default function Player() {
             <option value="1.5">1.5x</option>
             <option value="1.75">1.75x</option>
             <option value="2.0">2.0x</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg
+              className="fill-current h-3 w-3 text-gray-900 dark:text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div>
+        <div className="inline-block relative w-16 mx-auto" title="Step">
+          <select
+            defaultValue="10"
+            onChange={handleStep}
+            className="block cursor-pointer appearance-none w-full text-sm font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 border-2 border-gray-900 dark:border-gray-100 hover:border-lime-400 focus:border-lime-400 pl-2 py-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline transition duration-300"
+          >
+            <option value="10">10s</option>
+            <option value="30">30s</option>
+            <option value="60">60s</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg
