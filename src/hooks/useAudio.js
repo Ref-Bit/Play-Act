@@ -10,9 +10,19 @@ const useAudio = (url, vol) => {
 
   const toggle = () => setPlaying(!playing);
   const muteToggle = () => setMuted(!muted);
-
+  
   useEffect(() => {
-    playing ? audio.play() : audio.pause();
+    const favicon = document.querySelector('#favicon');
+    const logo = document.querySelector('#logo');
+    if (playing) {
+      audio.play();
+      favicon.setAttribute('href', './play.png');
+      logo.classList.add('animate-ping');
+    } else {
+      audio.pause();
+      favicon.setAttribute('href', './pause.png');
+      logo.classList.remove('animate-ping');
+    }
     muted && vol > 0 ? (audio.muted = true) : (audio.muted = false);
     audio.volume = vol / 100;
   }, [audio, playing, muted, vol]);
