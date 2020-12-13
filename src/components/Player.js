@@ -13,7 +13,7 @@ import {
   Volume,
 } from './Icons';
 import useAudio from '../hooks/useAudio';
-import { convertSecondsToHHMMSS, convertFileToBase64 } from '../helpers';
+import { convertSecondsToHHMMSS } from '../helpers';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
