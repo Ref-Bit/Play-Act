@@ -2,6 +2,8 @@
 A web app inspired by Tailwindcss version 2 audio player example, but with full potential!.
 
 ***
+![Showcase](./public/showcase.png)
+
 
 #### Built With
 
